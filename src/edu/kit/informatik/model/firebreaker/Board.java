@@ -1,10 +1,10 @@
 package edu.kit.informatik.model.firebreaker;
 
+import edu.kit.informatik.control.command.parser.Parser;
 import edu.kit.informatik.control.messages.Errors;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import javax.swing.*;
+
 
 /**
  * The class representing a board.
@@ -13,14 +13,18 @@ import java.util.List;
  */
 public class Board {
     // Static variables of the board and its states.
-    private static final  int MIN_SIZE = 5;
-    // Order: Lake (4 total, same symbol), 4 fire stations (A-D), forest states: dry, wet, burning, burning strong.
-    private static final  String[] CELL_STATES = {"L", "A", "B", "C", "D", "d", "w", "+", "*"};
+    private static final int MIN_SIZE = 5;
+    private static final String REGEX_NON_FOREST_NAME = "[A-Z]";
+    // Order: Lake (4 total, same symbol), 4 fire stations (A-D), forest.
+    private static final  String[] CELL_STATES = {"L", "A", "B", "C", "D", "F"};
+    // Denotes which token(s) can be changed.
+    // Adjustments can be made with implementing new methods if new mechanics are required.
+    private static final String FOREST_TOKEN = "F";
+    private static final String[] FOREST_STATES = {"w", "d", "+", "*"};
 
     private final int boardWidth;
     private final int boardHeight;
     private final String[][] board;
-    private final List<String> allowedStates;
 
     /**
      * Constructor of the board.
@@ -37,8 +41,6 @@ public class Board {
         }
         this.boardHeight = boardHeight;
         this.boardWidth = boardWidth;
-        this.allowedStates = new LinkedList<>();
-        this.allowedStates.addAll(Arrays.asList(CELL_STATES));
         this.board = new String[boardWidth][boardHeight];
     }
 
@@ -87,9 +89,28 @@ public class Board {
      * @throws GameException If the input status is not valid.
      */
     public void setCell(int abscissa, int ordinate, String status) throws GameException {
-        if (!allowedStates.contains(status)) {
+        if (!validState(abscissa, ordinate, status)) {
             throw new GameException(String.format(Errors.INVALID_CELL_STATE, status));
         }
         this.board[abscissa][ordinate] = status;
+    }
+
+    private boolean validState(int abscissa, int ordinate, String status) throws GameException {
+        // empty cells have yet to be placed
+        if (this.getCell(abscissa, ordinate) == null) {
+            return true;
+        }
+        else {
+            for (String cellStatus : CELL_STATES) {
+                if (cellStatus.equals(status)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void burn(int abscissa, int ordinate) {
+
     }
 }

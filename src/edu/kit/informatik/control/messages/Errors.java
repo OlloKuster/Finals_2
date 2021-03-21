@@ -11,4 +11,8 @@ public class Errors {
             + " or greater";
     /** Error if the input asks for a cell out of scope. **/
     public static final String OUT_OF_SCOPE = "specified cell is out of scope.";
+    /** Error if the input asks for a cell out of scope. **/
+    public static final String NOT_FOREST_CELL = "cell is not a forest cell and cannot burn.";
+    /** Error if a change to an empty cell is made. **/
+    public static final String EMPTY_CELL_CHANGE = "cell at '%d' x '%d' is not set yet.";
 }

@@ -15,4 +15,6 @@ public class Errors {
     public static final String NOT_FOREST_CELL = "cell is not a forest cell and cannot burn.";
     /** Error if a change to an empty cell is made. **/
     public static final String EMPTY_CELL_CHANGE = "cell at '%d' x '%d' is not set yet.";
+    /** Error if the number of arguments is wrong. **/
+    public static final String INVALID_NUMBER_ARGUMENT = "invalid number of arguments.";
 }

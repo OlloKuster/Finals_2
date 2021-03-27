@@ -5,12 +5,14 @@ public class FireFighter {
     private int horPosition; // abscissa
     private int vertPosition; // ordinate
     private int actionPoints;
+    private int waterPoints;
 
     public FireFighter(final String name, int horPosition, int vertPosition) {
         this.name = name;
         this.horPosition = horPosition;
         this.vertPosition = vertPosition;
         this.actionPoints = 0;
+        this.waterPoints = 3;
     }
 
     public String getName() {
@@ -39,5 +41,13 @@ public class FireFighter {
 
     public void setActionPoints(int actionPoints) {
         this.actionPoints = actionPoints;
+    }
+
+    public int getWaterPoints() {
+        return waterPoints;
+    }
+
+    public void setWaterPoints(int waterPoints) {
+        this.waterPoints = waterPoints;
     }
 }

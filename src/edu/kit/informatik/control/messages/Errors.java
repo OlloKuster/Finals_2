@@ -21,4 +21,8 @@ public class Errors {
     public static final String UNKNOWN_COMMAND = "command not found.";
     /** Error if the figure can't move and it's a general case. **/
     public static final String CANNOT_MOVE = "cannot move there.";
+    /** Error if the figure can't extinguish the field and it's a general case. **/
+    public static final String CANNOT_EXTINGUISH = "cannot extinguish there.";
+    /** Error if the figure can't refill and it's a general case. **/
+    public static final String CANNOT_REFILL = "cannot refill there.";
 }

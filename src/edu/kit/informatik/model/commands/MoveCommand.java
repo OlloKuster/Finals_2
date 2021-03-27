@@ -2,6 +2,7 @@ package edu.kit.informatik.model.commands;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
+import edu.kit.informatik.control.messages.Messages;
 import edu.kit.informatik.model.firebreaker.FireFighter;
 import edu.kit.informatik.model.firebreaker.GameException;
 import edu.kit.informatik.view.Session;
@@ -22,17 +23,17 @@ public class MoveCommand implements Command {
 
         GameState currentState = session.getGameState();
         FireFighter fireFighter = currentState.getFigureByName(name);
-        if (this.moveRules(currentState, fireFighter, targetRow, targetColumn)) {
+        if (this.rules(currentState, fireFighter, targetRow, targetColumn)) {
             fireFighter.setHorPosition(targetRow);
             fireFighter.setVertPosition(targetColumn);
+            return ("OK");
         }
         else {
             throw new GameException(Errors.CANNOT_MOVE);
         }
-        return null;
     }
 
-    private boolean moveRules(GameState currentState, FireFighter fireFighter, int row, int column) {
+    private boolean rules(GameState currentState, FireFighter fireFighter, int row, int column) {
         return true;
     }
 }

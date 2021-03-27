@@ -11,11 +11,13 @@ public class GameState {
     private final List<Player> players;
     private final Board board;
     private final List<FireFighter> figures;
+    private boolean win;
 
     public GameState(List<Player> players, Board board, List<FireFighter> figures) {
         this.players = players;
         this.board = board;
         this.figures = figures;
+        this.win = false;
     }
 
     public List<Player> getPlayers() {
@@ -46,5 +48,9 @@ public class GameState {
             }
         }
         return null;
+    }
+
+    public void won() {
+        this.win = true;
     }
 }

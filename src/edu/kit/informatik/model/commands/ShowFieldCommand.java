@@ -2,5 +2,5 @@ package edu.kit.informatik.model.commands;
 
 import edu.kit.informatik.control.command.Command;
 
-public class Move implements Command {
+public class ShowFieldCommand implements Command {
 }

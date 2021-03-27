@@ -17,4 +17,8 @@ public class Errors {
     public static final String EMPTY_CELL_CHANGE = "cell at '%d' x '%d' is not set yet.";
     /** Error if the number of arguments is wrong. **/
     public static final String INVALID_NUMBER_ARGUMENT = "invalid number of arguments.";
+    /** Error if the command is invalid. **/
+    public static final String UNKNOWN_COMMAND = "command not found.";
+    /** Error if the figure can't move and it's a general case. **/
+    public static final String CANNOT_MOVE = "cannot move there.";
 }

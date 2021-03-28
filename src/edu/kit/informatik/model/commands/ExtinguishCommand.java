@@ -39,6 +39,8 @@ public class ExtinguishCommand implements Command {
             int waterPoints = fireFighter.getWaterPoints();
             fireFighter.setWaterPoints(--waterPoints);
 
+            fireFighter.setCanExtinguish(false);
+
             if (cellStatus.equals("d")) {
                 Player currentPlayer = currentState.getCurrentPlayer();
                 int repPoints = currentPlayer.getReputationPoints();
@@ -55,19 +57,23 @@ public class ExtinguishCommand implements Command {
         String status = board.getCell(row, column);
         switch(status) {
             case "d":
-                board.setCell(row, column, "w");
             case "+":
                 board.setCell(row, column, "w");
+                return;
             case "*":
                 board.setCell(row, column, "+");
+                return;
             default:
-                throw new GameException(Errors.INVALID_CELL_STATE);
+                throw new GameException(String.format(Errors.INVALID_CELL_STATE, status));
         }
     }
 
     private boolean rules(GameState currentState, FireFighter fireFighter, int row, int column) throws GameException {
         int actionPoints = fireFighter.getActionPoints();
         int waterPoints = fireFighter.getWaterPoints();
+        if (!fireFighter.isCanExtinguish()) {
+            throw new GameException(Errors.ALREADY_EXTINGUISHED);
+        }
         if (actionPoints == 0) {
             throw new GameException(Errors.NO_ACTION_POINTS);
         }
@@ -77,18 +83,18 @@ public class ExtinguishCommand implements Command {
         Board board = currentState.getBoard();
         String tarStatus = board.getCell(row, column);
 
-        final Pattern extPattern = Pattern.compile(REGEX_CANNOT_EXTINGUISH);
-        final Matcher extMatcher = extPattern.matcher(tarStatus);
-
-        if (extMatcher.matches()) {
-            throw new GameException(String.format(Errors.CANNOT_EXTINGUISH_FIELD, row, column));
-        }
-
         int curRow = fireFighter.getHorPosition();
         int curColumn = fireFighter.getVertPosition();
         int dist = Util.intAbs(row - curRow) + Util.intAbs(column - curColumn);
         if (dist > 1) {
             throw new GameException(String.format(Errors.CANNOT_REACH, row, column));
+        }
+
+        final Pattern extPattern = Pattern.compile(REGEX_CANNOT_EXTINGUISH);
+        final Matcher extMatcher = extPattern.matcher(tarStatus);
+
+        if (extMatcher.matches()) {
+            throw new GameException(String.format(Errors.CANNOT_EXTINGUISH_FIELD, row, column, tarStatus));
         }
 
         return true;

@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class Parser { private static final String REGEX_SINGLE_PARAMETER = "[^\\n\\r]";
     private static final String REGEX_SINGLE_COMMAND = "(\\S+)";
     private static final String REGEX_COMMAND = REGEX_SINGLE_COMMAND + "(?:\\s(" + REGEX_SINGLE_PARAMETER + "*))?";
-    private static final String REGEX_ARGUMENT_SEPARATOR = " ";
+    private static final String REGEX_ARGUMENT_SEPARATOR = ",";
     private static final int REGEX_GROUP_COMMAND_PARAMETER = 2;
     private static final int REGEX_GROUP_PARAMETER_PARAMETER = 2;
 

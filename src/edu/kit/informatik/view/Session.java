@@ -2,23 +2,43 @@ package edu.kit.informatik.view;
 
 import edu.kit.informatik.Terminal;
 import edu.kit.informatik.control.command.Command;
+import edu.kit.informatik.model.commands.InitialiseCommand;
 import edu.kit.informatik.model.data.Pair;
 import edu.kit.informatik.model.firebreaker.GameException;
 import edu.kit.informatik.view.game.GameState;
 
 import java.util.List;
 
+/**
+ * A session for the game.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class Session {
     private GameState gameState;
     private boolean quit;
 
-    public void start() {
+    /**
+     * Constructor to ensure an empty game state at the start.
+     */
+    public Session() {
+        this.gameState = null;
+    }
+
+    /**
+     * Starts a new game.
+     * @param initialInput Initial input to construct the board.
+     */
+    public void start(List<String> initialInput) throws GameException {
+        Command initialise = new InitialiseCommand();
+        initialise.execute(this, initialInput);
         while (!this.quit) {
             final String input = Terminal.readLine();
             final String output;
             try {
                 output = this.process(input);
             } catch (final GameException e) {
+
                 Terminal.printError(e.getMessage());
                 continue;
             }

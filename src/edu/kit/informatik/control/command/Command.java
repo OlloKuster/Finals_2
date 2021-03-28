@@ -25,6 +25,8 @@ public interface Command {
                 return new TurnCommand();
             case "reset":
                 return new ResetCommand();
+            case "show-board":
+                return new ShowBoardCommand();
             case "show-field":
                 return new ShowFieldCommand();
             case "show-player":

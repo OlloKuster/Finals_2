@@ -20,9 +20,9 @@ public class RefillCommand implements Command {
         FireFighter fireFighter = currentState.getFigureByName(name);
 
         if (rules(currentState, fireFighter)) {
-            int waterPoints = fireFighter.getWaterPoints();
-            fireFighter.setWaterPoints(--waterPoints);
+            fireFighter.setWaterPoints(3);
             int actionPoints = fireFighter.getActionPoints();
+            fireFighter.setActionPoints(--actionPoints);
             return String.format("%d", actionPoints);
         }
         else {
@@ -31,7 +31,12 @@ public class RefillCommand implements Command {
 
     }
 
-    private boolean rules(GameState currentState, FireFighter fireFighter) {
+    private boolean rules(GameState currentState, FireFighter fireFighter) throws GameException {
+        int actionPoints = fireFighter.getActionPoints();
+        if (actionPoints == 0) {
+            throw new GameException(Errors.NO_ACTION_POINTS);
+        }
         return true;
+
     }
 }

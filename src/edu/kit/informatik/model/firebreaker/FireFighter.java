@@ -11,7 +11,7 @@ public class FireFighter {
         this.name = name;
         this.horPosition = horPosition;
         this.vertPosition = vertPosition;
-        this.actionPoints = 0;
+        this.actionPoints = 3;
         this.waterPoints = 3;
     }
 

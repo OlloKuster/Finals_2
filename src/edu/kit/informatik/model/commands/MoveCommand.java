@@ -16,8 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoveCommand implements Command {
-    static final String REGEX_CANNOT_ENTER = "(\\*|\\+|w|[A-Z])";
-    static final String REGEX_CANNOT_PASS = "(\\*|w|[A-Z])";
+    private static final String REGEX_CANNOT_ENTER = "(\\*|\\+|w|[A-Z])";
+    private static final String REGEX_CANNOT_PASS = "(\\*|w|[A-Z])";
 
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
@@ -49,18 +49,11 @@ public class MoveCommand implements Command {
         String fireFighterName = fireFighter.getName();
         Board board = currentState.getBoard();
 
-        return this.checkOwnership(playerName, fireFighterName) && this.checkMove(board, fireFighter, row, column);
+        return Util.checkOwnership(playerName, fireFighterName) && this.checkMove(board, fireFighter, row, column);
 
     }
 
-    private boolean checkOwnership(String playerName, String fireFighterName) throws GameException {
-        if (fireFighterName.startsWith(playerName)) {
-            return true;
-        }
-        else {
-            throw new GameException(String.format(Errors.NOT_OWNER, fireFighterName, playerName));
-        }
-    }
+
 
     private boolean checkMove(Board board, FireFighter fireFighter, int row, int column) throws GameException {
         final Pattern enterPattern = Pattern.compile(REGEX_CANNOT_ENTER);

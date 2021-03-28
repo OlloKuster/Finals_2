@@ -15,10 +15,7 @@ public class Board {
     // Static variables of the board and its states.
     private static final int MIN_SIZE = 5;
     // Order: Lake (4 total, same symbol), 4 fire stations (A-D), forest.
-    private static final  String[] CELL_STATES = {"L", "A", "B", "C", "D", "F"};
-    // Denotes which token(s) can be changed.
-    // Adjustments can be made with implementing new methods if new mechanics are required.
-    private static final String FOREST_TOKEN = "F";
+    private static final  String[] CELL_STATES = {"L", "A", "B", "C", "D", "w", "d", "+", "*"};
 
     private final int boardWidth;
     private final int boardHeight;

@@ -6,6 +6,7 @@ public class FireFighter {
     private int vertPosition; // ordinate
     private int actionPoints;
     private int waterPoints;
+    private boolean canExtinguish;
 
     public FireFighter(final String name, int horPosition, int vertPosition) {
         this.name = name;
@@ -13,6 +14,7 @@ public class FireFighter {
         this.vertPosition = vertPosition;
         this.actionPoints = 3;
         this.waterPoints = 3;
+        this.canExtinguish = true;
     }
 
     public String getName() {
@@ -49,5 +51,13 @@ public class FireFighter {
 
     public void setWaterPoints(int waterPoints) {
         this.waterPoints = waterPoints;
+    }
+
+    public void setCanExtinguish(boolean canExtinguish) {
+        this.canExtinguish = canExtinguish;
+    }
+
+    public boolean isCanExtinguish() {
+        return canExtinguish;
     }
 }

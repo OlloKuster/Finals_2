@@ -24,7 +24,7 @@ public class ShowPlayerCommand implements Command {
         List<FireFighter> fireFighterList = gameState.getFigures();
         int reputationPoints = currentPlayer.getReputationPoints();
 
-        String output = playerName + reputationPoints;
+        String output = playerName + "," +  reputationPoints;
 
         final String regexFirefighterName = playerName + "[0-9]+";
         final Pattern namePattern = Pattern.compile(regexFirefighterName);
@@ -36,7 +36,7 @@ public class ShowPlayerCommand implements Command {
                 int actionPoints = fireFighter.getActionPoints();
                 int row = fireFighter.getHorPosition();
                 int column = fireFighter.getVertPosition();
-                output = "\n" + output + "," + fireFighterName + "," + waterPoints + ","
+                output = output + "\n"  + fireFighterName + "," + waterPoints + ","
                         + actionPoints + "," + row + "," + column;
             }
         }

@@ -9,8 +9,14 @@ import edu.kit.informatik.view.game.GameState;
 
 import java.util.List;
 
+/**
+ * Command to buy a fire engine aka fire fighter.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class BuyFireEngineCommand implements Command {
     private static final int REQ_REP_POINTS = 5;
+
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
         if (arguments.size() != 1) {
@@ -32,7 +38,7 @@ public class BuyFireEngineCommand implements Command {
         }
     }
 
-    public boolean rules(GameState gameState) throws GameException {
+    private boolean rules(GameState gameState) throws GameException {
         Player currentPlayer = gameState.getCurrentPlayer();
         int reputationPoints = currentPlayer.getReputationPoints();
         if (reputationPoints < REQ_REP_POINTS) {

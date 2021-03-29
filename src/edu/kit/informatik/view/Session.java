@@ -74,23 +74,41 @@ public class Session {
         return command.execute(this, arguments);
     }
 
+    /**
+     * Method to quit the console.
+     */
     public void quit() {
         this.quit = true;
     }
 
-
+    /**
+     * Returns the current game state.
+     * @return The game state.
+     */
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * Sets the current game state.
+     * @param gameState The game state.
+     */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
+    /**
+     * The getter for the initial input.
+     * @return The initial input.
+     */
     public List<String> getInitialInput() {
         return initialInput;
     }
 
+    /**
+     * Method to reset the session.
+     * @param gameState The game state which will be pulled.
+     */
     public void reset(GameState gameState) {
         this.gameState = gameState;
     }

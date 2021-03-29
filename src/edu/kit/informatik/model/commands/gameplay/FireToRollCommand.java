@@ -13,6 +13,11 @@ import edu.kit.informatik.view.game.GameState;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Command to spread the fire.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class FireToRollCommand implements Command {
 
     @Override
@@ -101,7 +106,7 @@ public class FireToRollCommand implements Command {
                 board.setCell(row, column, "*");
                 return;
             default:
-                return;
+                return; // to break the switch.
         }
     }
 
@@ -128,7 +133,7 @@ public class FireToRollCommand implements Command {
     }
 
 
-    private boolean checkLoss(GameState gameState) throws GameException {
+    private boolean checkLoss(GameState gameState) {
         return gameState.lost();
     }
 }

@@ -14,7 +14,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class for the command to extinguish a fire.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class ExtinguishCommand implements Command {
+    private static final String REGEX_CANNOT_EXTINGUISH = "(L|[A-Z])";
+
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
         if (arguments.size() != 3) {
@@ -105,7 +112,7 @@ public class ExtinguishCommand implements Command {
             throw new GameException(String.format(Errors.CANNOT_REACH, row, column));
         }
 
-        final Pattern extPattern = Pattern.compile(Board.REGEX_CANNOT_EXTINGUISH);
+        final Pattern extPattern = Pattern.compile(REGEX_CANNOT_EXTINGUISH);
         final Matcher extMatcher = extPattern.matcher(tarStatus);
 
         if (extMatcher.matches()) {

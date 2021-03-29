@@ -7,7 +7,17 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Main class.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class Main {
+    /**
+     * Main method, standard implementation.
+     * @param args standard input.
+     * @throws GameException from methods
+     */
     public static void main(String[] args) throws GameException {
         String[] inputArgs = args[1].split(",");
         List<String> input = new LinkedList<>(Arrays.asList(inputArgs));

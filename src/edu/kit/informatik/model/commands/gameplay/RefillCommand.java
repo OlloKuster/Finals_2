@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The command to refill a fire fighter.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class RefillCommand implements Command {
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {

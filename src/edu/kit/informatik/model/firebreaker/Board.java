@@ -15,10 +15,6 @@ public class Board {
     private static final int MIN_SIZE = 5;
     // Order: Lake (4 total, same symbol), 4 fire stations (A-D), forest.
     private static final  String[] CELL_STATES = {"L", "A", "B", "C", "D", "w", "d", "+", "*"};
-    public static final String REGEX_CANNOT_EXTINGUISH = "(L|[A-Z])";
-    public static final String REGEX_CANNOT_ENTER = "(\\*|\\+|L|[A-Z])";
-    public static final String REGEX_CANNOT_PASS = "(\\*|w|[A-Z])";
-
     private final int boardWidth;
     private final int boardHeight;
     private final String[][] board;

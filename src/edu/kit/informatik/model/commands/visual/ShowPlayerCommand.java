@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Command to show the active player.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class ShowPlayerCommand implements Command {
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {

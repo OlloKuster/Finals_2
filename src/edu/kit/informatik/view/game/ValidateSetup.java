@@ -12,13 +12,27 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class to validate a setup.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class ValidateSetup {
     private boolean validSetup;
 
+    /**
+     * Constructor, initially as false.
+     */
     public ValidateSetup() {
         this.validSetup = false;
     }
 
+    /**
+     * Method which validates the setup entered.
+     * @param session The current session of the game.
+     * @param arguments The input arguments.
+     * @throws GameException If the entered state is not a valid game state.
+     */
     public void validateSetup(Session session, List<String> arguments) throws GameException {
         List<String> boardArgs = new LinkedList<>();
         for (int i = 2; i < arguments.size(); i++) {
@@ -179,13 +193,5 @@ public class ValidateSetup {
             throw new GameException(Errors.NO_STRONG_BURN);
         }
         return true;
-    }
-
-    public boolean isValidSetup() {
-        return validSetup;
-    }
-
-    public void setValidSetup(boolean validSetup) {
-        this.validSetup = validSetup;
     }
 }

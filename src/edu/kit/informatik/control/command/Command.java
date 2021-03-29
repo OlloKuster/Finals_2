@@ -13,8 +13,23 @@ import edu.kit.informatik.view.game.GameState;
 
 import java.util.List;
 
+/**
+ * Command interface to parse the inputs.
+ * Some commands implement game rules, but those will be incorporated as private methods instead of a new interface
+ * and are not enforced here.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public interface Command {
 
+    /**
+     * Parses the correct command.
+     * Differentiate before and after a win/loss
+     * @param string The command which will be called.
+     * @param gameState The current game state which will be parsed.
+     * @return A new command.
+     * @throws GameException When the command is not known.
+     */
     static Command fromString(final String string, GameState gameState) throws GameException {
         if (gameState.isWin() || gameState.isLoss()) {
             switch (string) {
@@ -58,5 +73,12 @@ public interface Command {
         }
     }
 
+    /**
+     * Executes the command.
+     * @param session The current session of the game.
+     * @param arguments The arguments passed.
+     * @return The message string after a successful execution.
+     * @throws GameException If anything goes wrong
+     */
     String execute(Session session, List<String> arguments) throws GameException;
 }

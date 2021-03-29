@@ -2,7 +2,6 @@ package edu.kit.informatik.model.commands.gameplay;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
-import edu.kit.informatik.control.messages.Messages;
 import edu.kit.informatik.control.util.Util;
 import edu.kit.informatik.model.firebreaker.Board;
 import edu.kit.informatik.model.firebreaker.FireFighter;
@@ -15,7 +14,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Command to move a unit.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class MoveCommand implements Command {
+    private static final String REGEX_CANNOT_ENTER = "(\\*|\\+|L|[A-Z])";
+    private static final String REGEX_CANNOT_PASS = "(\\*|w|[A-Z])";
+
 
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
@@ -56,8 +63,8 @@ public class MoveCommand implements Command {
 
 
     private boolean checkMove(Board board, FireFighter fireFighter, int row, int column) throws GameException {
-        final Pattern enterPattern = Pattern.compile(Board.REGEX_CANNOT_ENTER);
-        final Pattern passPattern = Pattern.compile(Board.REGEX_CANNOT_PASS);
+        final Pattern enterPattern = Pattern.compile(REGEX_CANNOT_ENTER);
+        final Pattern passPattern = Pattern.compile(REGEX_CANNOT_PASS);
         int boardWidth = board.getBoardWidth();
         int boardHeight = board.getBoardHeight();
         int actionPoints = fireFighter.getActionPoints();

@@ -11,8 +11,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Command to show the board.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class ShowBoardCommand implements Command {
     private static final String REGEX_BURNING = "([*+])";
+
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
         if (arguments.size() != 0) {

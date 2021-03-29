@@ -12,8 +12,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Command to show the field.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class ShowFieldCommand implements Command {
     private static final String REGEX_NON_BURNABLE = "[A-D]|L";
+
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
         if (arguments.size() != 2) {

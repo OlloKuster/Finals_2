@@ -7,6 +7,11 @@ import edu.kit.informatik.view.Session;
 
 import java.util.List;
 
+/**
+ * Command to quit.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class QuitCommand implements Command {
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {

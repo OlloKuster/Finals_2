@@ -12,7 +12,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Initialise {
+/**
+ * The class to initialise a game state.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
+public abstract class Initialise {
     /** Dimensions of the game, just a formality for easier adjustments */
     static final int DIMENSIONS = 2;
     /** Players and their names */
@@ -24,7 +29,12 @@ public class Initialise {
     }
 
 
-
+    /**
+     * Initialises a board.
+     * @param arguments The input arguments.
+     * @return The initialised board given by the arguments.
+     * @throws GameException If the input is wrong.
+     */
     static Board initialiseBoard(List<String> arguments) throws GameException {
         int pos = DIMENSIONS;
         int width = Integer.parseInt(arguments.get(0));
@@ -56,6 +66,10 @@ public class Initialise {
         return board;
     }
 
+    /**
+     * Initialises the players.
+     * @return The list of players in the game.
+     */
     static List<Player> initialisePlayers() {
         List<Player> playerList = new LinkedList<>();
         for (String playerName : PLAYERS) {
@@ -65,6 +79,14 @@ public class Initialise {
         return playerList;
     }
 
+    /**
+     * Initialises the fire fighters. Has to be done AFTER the players, else you cannot assign the
+     * fire fighters to the players.
+     * @param arguments Input arguments, extract where the fire fighters are placed
+     * @param players The players in the game
+     * @return A list of the fire fighters in game.
+     * @throws GameException If the players and fire fighters don't match
+     */
     static List<FireFighter> initialiseFireFighters(List<String> arguments, List<Player> players) throws GameException {
         int pos = DIMENSIONS;
         int width = Integer.parseInt(arguments.get(0));
@@ -79,8 +101,7 @@ public class Initialise {
                 if (nameMatcher.matches()) {
                     FireFighter fireFighter = new FireFighter(cell, i, j);
                     String ownerName = cell.substring(0, cell.length() - 1);
-                    for (int k = 0; k < players.size(); k++) {
-                        Player currPlayer = players.get(k);
+                    for (Player currPlayer : players) {
                         if (currPlayer.getName().equals(ownerName)) {
                             currPlayer.addFireFighter(fireFighter);
                         }

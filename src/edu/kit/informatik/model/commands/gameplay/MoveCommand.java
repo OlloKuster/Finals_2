@@ -1,4 +1,4 @@
-package edu.kit.informatik.model.commands;
+package edu.kit.informatik.model.commands.gameplay;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
@@ -16,8 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoveCommand implements Command {
-    private static final String REGEX_CANNOT_ENTER = "(\\*|\\+|w|[A-Z])";
-    private static final String REGEX_CANNOT_PASS = "(\\*|w|[A-Z])";
 
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
@@ -36,6 +34,8 @@ public class MoveCommand implements Command {
             fireFighter.setVertPosition(targetColumn);
             int actionPoints = fireFighter.getActionPoints();
             fireFighter.setActionPoints(--actionPoints);
+            Player player = currentState.getCurrentPlayer();
+            player.setMadeAction(true);
             return ("OK");
         }
         else {
@@ -56,8 +56,8 @@ public class MoveCommand implements Command {
 
 
     private boolean checkMove(Board board, FireFighter fireFighter, int row, int column) throws GameException {
-        final Pattern enterPattern = Pattern.compile(REGEX_CANNOT_ENTER);
-        final Pattern passPattern = Pattern.compile(REGEX_CANNOT_PASS);
+        final Pattern enterPattern = Pattern.compile(Board.REGEX_CANNOT_ENTER);
+        final Pattern passPattern = Pattern.compile(Board.REGEX_CANNOT_PASS);
         int boardWidth = board.getBoardWidth();
         int boardHeight = board.getBoardHeight();
         int actionPoints = fireFighter.getActionPoints();
@@ -66,7 +66,7 @@ public class MoveCommand implements Command {
             throw new GameException(Errors.NO_ACTION_POINTS);
         }
 
-        if (row < -1 || row >= boardWidth || column < -1 || column >= boardHeight) {
+        if (row < -1 || row >= boardWidth - 1 || column < -1 || column >= boardHeight - 1) {
             throw new GameException(String.format(Errors.NOT_ON_BOARD, row, column));
         }
         String tarCell = board.getCell(row, column);
@@ -82,6 +82,9 @@ public class MoveCommand implements Command {
 
         if (dist > 2) {
             throw new GameException(String.format(Errors.OUT_OF_RANGE, row, column, fireFighter.getName()));
+        }
+        if (dist == 0) {
+            throw new GameException(Errors.STANDING_STILL);
         }
         if (Util.intAbs(row - curRow) == Util.intAbs(column -  curColumn)) {
             String horTarField = board.getCell(row, curColumn);

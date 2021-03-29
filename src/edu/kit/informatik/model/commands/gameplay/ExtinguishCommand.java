@@ -1,4 +1,4 @@
-package edu.kit.informatik.model.commands;
+package edu.kit.informatik.model.commands.gameplay;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
@@ -15,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtinguishCommand implements Command {
-    private static final String REGEX_CANNOT_EXTINGUISH = "(w|[A-Z])";
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
         if (arguments.size() != 3) {
@@ -30,7 +29,8 @@ public class ExtinguishCommand implements Command {
 
         if (this.rules(currentState, fireFighter, targetRow, targetColumn)) {
             Board board = currentState.getBoard();
-            this.extinguish(board, targetRow, targetColumn);
+            Player player = currentState.getCurrentPlayer();
+            this.extinguish(currentState, targetRow, targetColumn);
             String cellStatus = board.getCell(targetRow, targetColumn);
 
             int actionPoints = fireFighter.getActionPoints();
@@ -39,12 +39,10 @@ public class ExtinguishCommand implements Command {
             int waterPoints = fireFighter.getWaterPoints();
             fireFighter.setWaterPoints(--waterPoints);
 
+            player.setMadeAction(true);
             fireFighter.setCanExtinguish(false);
-
-            if (cellStatus.equals("d")) {
-                Player currentPlayer = currentState.getCurrentPlayer();
-                int repPoints = currentPlayer.getReputationPoints();
-                currentPlayer.setReputationPoints(++repPoints);
+            if (checkWin(currentState)) {
+                return "win";
             }
             return (String.format("%s,%d", cellStatus, actionPoints));
         }
@@ -53,12 +51,19 @@ public class ExtinguishCommand implements Command {
         }
     }
 
-    private void extinguish(Board board, int row, int column) throws GameException {
+    private void extinguish(GameState gameState, int row, int column) throws GameException {
+        Board board = gameState.getBoard();
+        Player currentPlayer = gameState.getCurrentPlayer();
         String status = board.getCell(row, column);
         switch(status) {
+            case "w":
             case "d":
+                board.setCell(row, column, "w");
+                return;
             case "+":
                 board.setCell(row, column, "w");
+                int repPoints = currentPlayer.getReputationPoints();
+                currentPlayer.setReputationPoints(++repPoints);
                 return;
             case "*":
                 board.setCell(row, column, "+");
@@ -68,9 +73,21 @@ public class ExtinguishCommand implements Command {
         }
     }
 
-    private boolean rules(GameState currentState, FireFighter fireFighter, int row, int column) throws GameException {
+    private boolean rules(GameState gameState, FireFighter fireFighter, int row, int column) throws GameException {
         int actionPoints = fireFighter.getActionPoints();
         int waterPoints = fireFighter.getWaterPoints();
+        Board board = gameState.getBoard();
+        String tarStatus = board.getCell(row, column);
+        int boardWidth = board.getBoardWidth();
+        int boardHeight = board.getBoardHeight();
+        Player currentPlayer = gameState.getCurrentPlayer();
+        String playerName = currentPlayer.getName();
+        String fireFighterName = fireFighter.getName();
+
+
+        if (row < -1 || row >= boardWidth - 1 || column < -1 || column >= boardHeight - 1) {
+            throw new GameException(String.format(Errors.NOT_ON_BOARD, row, column));
+        }
         if (!fireFighter.isCanExtinguish()) {
             throw new GameException(Errors.ALREADY_EXTINGUISHED);
         }
@@ -80,8 +97,6 @@ public class ExtinguishCommand implements Command {
         if (waterPoints == 0) {
             throw new GameException(Errors.NO_WATER_POINTS);
         }
-        Board board = currentState.getBoard();
-        String tarStatus = board.getCell(row, column);
 
         int curRow = fireFighter.getHorPosition();
         int curColumn = fireFighter.getVertPosition();
@@ -90,13 +105,17 @@ public class ExtinguishCommand implements Command {
             throw new GameException(String.format(Errors.CANNOT_REACH, row, column));
         }
 
-        final Pattern extPattern = Pattern.compile(REGEX_CANNOT_EXTINGUISH);
+        final Pattern extPattern = Pattern.compile(Board.REGEX_CANNOT_EXTINGUISH);
         final Matcher extMatcher = extPattern.matcher(tarStatus);
 
         if (extMatcher.matches()) {
             throw new GameException(String.format(Errors.CANNOT_EXTINGUISH_FIELD, row, column, tarStatus));
         }
 
-        return true;
+        return Util.checkOwnership(playerName, fireFighterName);
+    }
+
+    private boolean checkWin(GameState gameState) throws GameException {
+        return gameState.won();
     }
 }

@@ -1,5 +1,7 @@
 package edu.kit.informatik.model.firebreaker;
 
+import java.util.Objects;
+
 public class FireFighter {
     private final String name;
     private int horPosition; // abscissa
@@ -59,5 +61,18 @@ public class FireFighter {
 
     public boolean isCanExtinguish() {
         return canExtinguish;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FireFighter that = (FireFighter) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

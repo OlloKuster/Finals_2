@@ -2,6 +2,11 @@ package edu.kit.informatik.control.command;
 
 import edu.kit.informatik.control.messages.Errors;
 import edu.kit.informatik.model.commands.*;
+import edu.kit.informatik.model.commands.gameplay.*;
+import edu.kit.informatik.model.commands.state.ResetCommand;
+import edu.kit.informatik.model.commands.visual.ShowBoardCommand;
+import edu.kit.informatik.model.commands.visual.ShowFieldCommand;
+import edu.kit.informatik.model.commands.visual.ShowPlayerCommand;
 import edu.kit.informatik.model.firebreaker.GameException;
 import edu.kit.informatik.view.Session;
 import edu.kit.informatik.view.game.GameState;
@@ -11,7 +16,7 @@ import java.util.List;
 public interface Command {
 
     static Command fromString(final String string, GameState gameState) throws GameException {
-        if (gameState.isWin()) {
+        if (gameState.isWin() || gameState.isLoss()) {
             switch (string) {
                 case "show-board":
                     return new ShowBoardCommand();
@@ -20,7 +25,7 @@ public interface Command {
                 case "quit":
                     return new QuitCommand();
                 default:
-                    throw new GameException(Errors.UNKNOWN_COMMAND);
+                    throw new GameException(Errors.UNKNOWN_COMMAND_END);
             }
         }
         else {

@@ -2,6 +2,7 @@ package edu.kit.informatik.view.game;
 
 import edu.kit.informatik.model.firebreaker.Board;
 import edu.kit.informatik.model.firebreaker.FireFighter;
+import edu.kit.informatik.model.firebreaker.GameException;
 import edu.kit.informatik.model.firebreaker.Player;
 
 import java.util.List;
@@ -11,16 +12,18 @@ public class GameState {
     private final Board board;
     private final List<FireFighter> figures;
     private Player currentPlayer;
-    private List<String> initialSetup;
+    private boolean burnt;
     private boolean win;
+    private boolean loss;
 
     public GameState(List<Player> players, Board board, List<FireFighter> figures) {
         this.players = players;
         this.board = board;
         this.figures = figures;
         this.currentPlayer = players.get(0);
-        this.initialSetup = null;
+        this.burnt = false;
         this.win = false;
+        this.loss = false;
     }
 
     public List<Player> getPlayers() {
@@ -63,15 +66,52 @@ public class GameState {
         curIndex = (curIndex + 1) % numberPlayers;
         this.currentPlayer = this.players.get(curIndex);
     }
-    public void won() {
-        this.win = true;
+
+    public boolean won() throws GameException {
+        int burningCells = 0;
+        for (int i = 0; i < this.board.getBoardHeight(); i++) {
+            for (int j = 0; j < this.board.getBoardWidth(); j++) {
+                if (this.board.getCell(i, j).equals("*") || this.board.getCell(i, j).equals("+")) {
+                    burningCells++;
+                }
+            }
+        }
+        if (burningCells == 0) {
+            this.win = true;
+            return true;
+        }
+        return false;
     }
 
-    public void setInitialSetup(List<String> initialSetup) {
-        this.initialSetup = initialSetup;
+    public boolean lost() throws GameException {
+        if (this.figures.size() == 0) {
+            this.loss = true;
+            return true;
+        }
+        return false;
     }
 
-    public List<String> getInitialSetup() {
-        return initialSetup;
+    public boolean isWin() {
+        return win;
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
+    }
+
+    public boolean isLoss() {
+        return loss;
+    }
+
+    public void setLoss(boolean loss) {
+        this.loss = loss;
+    }
+
+    public boolean isBurnt() {
+        return burnt;
+    }
+
+    public void setBurnt(boolean burnt) {
+        this.burnt = burnt;
     }
 }

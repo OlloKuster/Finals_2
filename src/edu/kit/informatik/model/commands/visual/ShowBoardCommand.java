@@ -1,4 +1,4 @@
-package edu.kit.informatik.model.commands;
+package edu.kit.informatik.model.commands.visual;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
@@ -43,7 +43,7 @@ public class ShowBoardCommand implements Command {
                         output = output + cell + ",";
                     }
                 }
-                if (j == board.getBoardWidth() - 1) {
+                if (j == board.getBoardWidth() - 1 && i != board.getBoardHeight() - 1) {
                     output = output + "\n";
                 }
             }

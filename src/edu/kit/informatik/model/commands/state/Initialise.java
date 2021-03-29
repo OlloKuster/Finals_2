@@ -1,13 +1,10 @@
-package edu.kit.informatik.model.commands;
+package edu.kit.informatik.model.commands.state;
 
-import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
 import edu.kit.informatik.model.firebreaker.Board;
 import edu.kit.informatik.model.firebreaker.FireFighter;
 import edu.kit.informatik.model.firebreaker.GameException;
 import edu.kit.informatik.model.firebreaker.Player;
-import edu.kit.informatik.view.Session;
-import edu.kit.informatik.view.game.GameState;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,51 +12,30 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Initialises a new game state
- * @author Oliver Kuster
- * @version 1.0
- */
-public class InitialiseCommand implements Command {
+public class Initialise {
     /** Dimensions of the game, just a formality for easier adjustments */
     static final int DIMENSIONS = 2;
     /** Players and their names */
     static final String[] PLAYERS = {"A", "B", "C", "D"};
     private static final String REGEX_FIREFIGHTER_NAME = "[A-D][0-9]+";
 
-    @Override
-    public String execute(Session session, List<String> arguments) throws GameException {
-        if (arguments.size() <= 2) {
-            throw new GameException(Errors.INVALID_NUMBER_ARGUMENT);
-        }
+    private Initialise() {
 
-        try {
-            Integer.parseInt(arguments.get(0));
-            Integer.parseInt(arguments.get(1));
-        } catch (NumberFormatException nfe) {
-            throw new GameException(Errors.INVALID_ARGUMENT);
-        }
-
-        Board board = initialiseBoard(arguments);
-        List<Player> players = initialisePlayers();
-        List<FireFighter> fireFighters = initialiseFireFighters(arguments);
-
-        GameState gameState = new GameState(players, board, fireFighters);
-        gameState.setInitialSetup(arguments);
-
-        if (session.getGameState() != null) {
-            throw new GameException(Errors.GAME_STILL_RUNNING);
-        }
-        else {
-            session.setGameState(gameState);
-        }
-        return null;
     }
 
-    private Board initialiseBoard(List<String> arguments) throws GameException {
+
+
+    static Board initialiseBoard(List<String> arguments) throws GameException {
         int pos = DIMENSIONS;
         int width = Integer.parseInt(arguments.get(0));
         int height = Integer.parseInt(arguments.get(1));
+
+        if (width % 2 == 0) {
+            throw new GameException(Errors.EVEN_WIDTH);
+        }
+        if (height % 2 == 0) {
+            throw new GameException(Errors.EVEN_HEIGHT);
+        }
         Pattern namePattern = Pattern.compile(REGEX_FIREFIGHTER_NAME);
 
         Board board = new Board(width, height);
@@ -80,7 +56,7 @@ public class InitialiseCommand implements Command {
         return board;
     }
 
-    private List<Player> initialisePlayers() {
+    static List<Player> initialisePlayers() {
         List<Player> playerList = new LinkedList<>();
         for (String playerName : PLAYERS) {
             Player player = new Player(playerName);
@@ -89,7 +65,7 @@ public class InitialiseCommand implements Command {
         return playerList;
     }
 
-    private List<FireFighter> initialiseFireFighters(List<String> arguments) {
+    static List<FireFighter> initialiseFireFighters(List<String> arguments, List<Player> players) throws GameException {
         int pos = DIMENSIONS;
         int width = Integer.parseInt(arguments.get(0));
         int height = Integer.parseInt(arguments.get(1));
@@ -102,6 +78,13 @@ public class InitialiseCommand implements Command {
                 Matcher nameMatcher = namePattern.matcher(cell);
                 if (nameMatcher.matches()) {
                     FireFighter fireFighter = new FireFighter(cell, i, j);
+                    String ownerName = cell.substring(0, cell.length() - 1);
+                    for (int k = 0; k < players.size(); k++) {
+                        Player currPlayer = players.get(k);
+                        if (currPlayer.getName().equals(ownerName)) {
+                            currPlayer.addFireFighter(fireFighter);
+                        }
+                    }
                     fireFighterList.add(fireFighter);
                 }
                 pos++;

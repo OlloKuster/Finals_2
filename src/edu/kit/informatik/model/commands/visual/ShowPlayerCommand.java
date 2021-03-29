@@ -1,4 +1,4 @@
-package edu.kit.informatik.model.commands;
+package edu.kit.informatik.model.commands.visual;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;

@@ -5,7 +5,7 @@ package edu.kit.informatik.model.firebreaker;
  * @author Oliver Kuster, structure mostly taken from Lucas Alber.
  * @version 1.0
  */
-public class GameException extends Exception{
+public class GameException extends Exception {
     /**
      * Constructs the error message.
      * @param message The error message.

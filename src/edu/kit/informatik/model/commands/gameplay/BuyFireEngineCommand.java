@@ -1,4 +1,4 @@
-package edu.kit.informatik.model.commands;
+package edu.kit.informatik.model.commands.gameplay;
 
 import edu.kit.informatik.control.command.Command;
 import edu.kit.informatik.control.messages.Errors;
@@ -24,6 +24,7 @@ public class BuyFireEngineCommand implements Command {
             int repPoints = player.getReputationPoints();
             repPoints -= REQ_REP_POINTS;
             player.setReputationPoints(repPoints);
+            player.setMadeAction(true);
             return (String.format("%d", repPoints));
         }
         else {

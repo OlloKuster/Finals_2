@@ -2,10 +2,11 @@ package edu.kit.informatik.view;
 
 import edu.kit.informatik.Terminal;
 import edu.kit.informatik.control.command.Command;
-import edu.kit.informatik.model.commands.InitialiseCommand;
+import edu.kit.informatik.model.commands.state.InitialiseCommand;
 import edu.kit.informatik.model.data.Pair;
 import edu.kit.informatik.model.firebreaker.GameException;
 import edu.kit.informatik.view.game.GameState;
+import edu.kit.informatik.view.game.ValidateSetup;
 
 import java.util.List;
 
@@ -15,23 +16,35 @@ import java.util.List;
  * @version 1.0
  */
 public class Session {
+    private final List<String> initialInput;
     private GameState gameState;
     private boolean quit;
 
     /**
      * Constructor to ensure an empty game state at the start.
+     * @param initialInput Initial input to construct the board.
      */
-    public Session() {
+    public Session(List<String> initialInput) {
+        this.initialInput = initialInput;
         this.gameState = null;
     }
 
     /**
      * Starts a new game.
-     * @param initialInput Initial input to construct the board.
      */
-    public void start(List<String> initialInput) throws GameException {
+    public void start() throws GameException {
+
         Command initialise = new InitialiseCommand();
-        initialise.execute(this, initialInput);
+        initialise.execute(this, this.initialInput);
+        ValidateSetup validator = new ValidateSetup();
+        try {
+            validator.validateSetup(this, initialInput);
+        }
+        catch (final GameException e) {
+            Terminal.printError(e.getMessage());
+            quit();
+        }
+
         while (!this.quit) {
             final String input = Terminal.readLine();
             final String output;
@@ -55,7 +68,7 @@ public class Session {
         Parser parser = new Parser();
         Pair<String, List<String>> parsedInput = parser.parse(input);
 
-        final Command command = Command.fromString(parsedInput.getFirst());
+        final Command command = Command.fromString(parsedInput.getFirst(), this.gameState);
         final List<String> arguments = parsedInput.getSecond();
 
         return command.execute(this, arguments);
@@ -71,6 +84,14 @@ public class Session {
     }
 
     public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public List<String> getInitialInput() {
+        return initialInput;
+    }
+
+    public void reset(GameState gameState) {
         this.gameState = gameState;
     }
 }

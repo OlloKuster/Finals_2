@@ -3,6 +3,9 @@ package edu.kit.informatik.control.util;
 import edu.kit.informatik.control.messages.Errors;
 import edu.kit.informatik.model.firebreaker.GameException;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class Util {
 
     public static int intAbs(int a) {
@@ -20,6 +23,15 @@ public class Util {
         }
         else {
             throw new GameException(String.format(Errors.NOT_OWNER, fireFighterName, playerName));
+        }
+    }
+
+    public static void pop(List<String> queue, String item) {
+        for (Iterator<String> iterator = queue.iterator(); iterator.hasNext();) {
+            String s = iterator.next();
+            if (item.equals(s)) {
+                iterator.remove();
+            }
         }
     }
 }

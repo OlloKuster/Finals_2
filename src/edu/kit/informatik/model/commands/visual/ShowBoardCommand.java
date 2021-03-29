@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
  */
 public class ShowBoardCommand implements Command {
     private static final String REGEX_BURNING = "([*+])";
+    private static final String TOKEN = "x";
 
     @Override
     public String execute(Session session, List<String> arguments) throws GameException {
@@ -35,10 +36,10 @@ public class ShowBoardCommand implements Command {
                 Matcher burnMatcher = burnPattern.matcher(cell);
                 if (!burnMatcher.matches()) {
                     if (j == board.getBoardWidth() - 1) {
-                        output = output + "X";
+                        output = output + TOKEN;
                     }
                     else {
-                        output = output + "X" + ",";
+                        output = output + TOKEN + ",";
                     }
                 }
                 else {

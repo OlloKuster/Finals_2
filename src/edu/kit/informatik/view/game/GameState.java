@@ -1,5 +1,7 @@
 package edu.kit.informatik.view.game;
 
+import edu.kit.informatik.control.messages.Errors;
+import edu.kit.informatik.control.util.Util;
 import edu.kit.informatik.model.firebreaker.Board;
 import edu.kit.informatik.model.firebreaker.FireFighter;
 import edu.kit.informatik.model.firebreaker.GameException;
@@ -7,13 +9,15 @@ import edu.kit.informatik.model.firebreaker.Player;
 
 import java.util.List;
 
+import static edu.kit.informatik.control.util.Util.*;
+
 /**
  * Game state class, which is used to pass information to the commands mostly.
  * @author Oliver Kuster
  * @version 1.0
  */
 public class GameState {
-    private final List<Player> players;
+    private List<Player> players;
     private final Board board;
     private final List<FireFighter> figures;
     private Player currentPlayer;
@@ -100,11 +104,25 @@ public class GameState {
     /**
      * Pulls up the next player in the list as the active player.
      */
-    public void nextPlayer() {
+    public void nextPlayer() throws GameException {
         int curIndex = this.players.indexOf(this.currentPlayer);
         int numberPlayers = this.players.size();
-        curIndex = (curIndex + 1) % numberPlayers;
-        this.currentPlayer = this.players.get(curIndex);
+        curIndex = (curIndex + 1);
+        if (curIndex < numberPlayers) {
+            this.currentPlayer = this.players.get(curIndex);
+        }
+        else if (curIndex == numberPlayers) {
+            List<Player> newPlayers = Util.permute(this.players);
+            Player newCurrPlayer = newPlayers.get(0);
+            resetFigures(newCurrPlayer);
+            resetPlayerFlag(newCurrPlayer);
+            resetBurnFlag(this);
+            this.players = newPlayers;
+            this.currentPlayer = newCurrPlayer;
+        }
+        else {
+            throw new GameException(Errors.INVALID_ARGUMENT);
+        }
     }
 
     /**

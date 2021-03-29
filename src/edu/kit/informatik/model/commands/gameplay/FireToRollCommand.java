@@ -52,28 +52,45 @@ public class FireToRollCommand implements Command {
             return "lose";
         }
         gameState.setBurnt(true);
-        return null;
+        return "OK";
     }
 
     private void diceResult(GameState gameState, int row, int column, int diceRoll) throws GameException {
+        Board board = gameState.getBoard();
+        String cell = board.getCell(row, column);
         switch (diceRoll) {
             case 1:
-                burn(gameState, row - 1, column);
-                burn(gameState, row + 1, column);
-                burn(gameState, row, column - 1);
-                burn(gameState, row, column + 1);
+                burn(gameState, row , column);
+                if (cell.equals("*")) {
+                    burn(gameState, row - 1, column);
+                    burn(gameState, row + 1, column);
+                    burn(gameState, row, column - 1);
+                    burn(gameState, row, column + 1);
+                }
                 return;
             case 2:
-                burn(gameState, row - 1, column);
+                burn(gameState, row , column);
+                if (cell.equals("*")) {
+                    burn(gameState, row - 1, column);
+                }
                 return;
             case 3:
-                burn(gameState, row, column + 1);
+                burn(gameState, row , column);
+                if (cell.equals("*")) {
+                    burn(gameState, row, column + 1);
+                }
                 return;
             case 4:
-                burn(gameState, row + 1, column);
+                burn(gameState, row , column);
+                if (cell.equals("*")) {
+                    burn(gameState, row + 1, column);
+                }
                 return;
             case 5:
-                burn(gameState, row, column - 1);
+                burn(gameState, row , column);
+                if (cell.equals("*")) {
+                    burn(gameState, row, column - 1);
+                }
                 return;
             case 6:
                 return;

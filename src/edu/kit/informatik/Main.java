@@ -19,7 +19,7 @@ public class Main {
      * @throws GameException from methods
      */
     public static void main(String[] args) throws GameException {
-        String[] inputArgs = args[1].split(",");
+        String[] inputArgs = args[0].split(",");
         List<String> input = new LinkedList<>(Arrays.asList(inputArgs));
         final Session session = new Session(input);
         session.start();

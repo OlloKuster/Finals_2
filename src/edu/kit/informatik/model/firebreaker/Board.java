@@ -2,8 +2,6 @@ package edu.kit.informatik.model.firebreaker;
 
 import edu.kit.informatik.control.messages.Errors;
 
-import javax.swing.*;
-
 
 /**
  * The class representing a board.

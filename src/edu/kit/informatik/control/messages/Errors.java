@@ -1,5 +1,10 @@
 package edu.kit.informatik.control.messages;
 
+/**
+ * All errors collected and kinda sorted.
+ * @author Oliver Kuster
+ * @version 1.0
+ */
 public class Errors {
     /** Error if a running game is trying to get initialised **/
     public static final String GAME_STILL_RUNNING = "there is already a game running";
@@ -77,6 +82,8 @@ public class Errors {
     public static final String CANNOT_BUY = "cannot buy.";
     /** Error if the can't buy a fire engine. **/
     public static final String NOT_ENOUGH_REP = "not enough reputation points.";
+    /** Error if the engine can't be placed. **/
+    public static final String CANNOT_PLACE = "cannot place fire engine here.";
     /** Error if the cell does not exist. **/
     public static final String EMPTY_CELL = "cell is not on the board";
 }

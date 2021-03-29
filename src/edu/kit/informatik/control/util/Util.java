@@ -7,6 +7,7 @@ import edu.kit.informatik.model.firebreaker.Player;
 import edu.kit.informatik.view.game.GameState;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -98,5 +99,20 @@ public final class Util {
      */
     public static void resetPlayerFlag(Player player) {
         player.setMadeAction(false);
+    }
+
+    /**
+     * Permutes a player list with +1
+     * @param stringList List to be permuted
+     * @return A permuted list
+     */
+    public static List<Player> permute(List<Player> stringList) {
+        List<Player> permutedList = new LinkedList<>();
+        for (int i = 0; i < stringList.size(); i++) {
+            int newPos = (i + 1) % stringList.size();
+            Player input = stringList.get(newPos);
+            permutedList.add(input);
+        }
+        return permutedList;
     }
 }
